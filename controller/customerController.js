@@ -78,7 +78,6 @@ class CustomerController {
       .catch((err) => {
         throw err
       });
-    // return res.status(200).json({ msg: 'Working' });
   }
 
   static getOne(req, res) {
@@ -101,6 +100,34 @@ class CustomerController {
         return res.status(200).json(customer);
       })
       .catch((err) => res.status(500).json(err));
+  }
+
+  static updateOne(req, res) {
+    const { id } = req.params;
+    
+    if (!id) return res.status(404).json({ error: 'No Customer Found' });
+    
+    const { street, city, state, postalCode, country } = req.body;
+
+    const updatedData = {
+      address: {
+        street: street,
+        city,
+        state,
+        postalCode,
+        country
+      },
+      updatedAt: Date.now()
+    }
+
+    return Customer.findOneAndUpdate({ _id: id }, updatedData, { new: true })
+      .then((customer) => {
+        if (!customer) return res.status(404).json({ error: 'No Customer Found' });
+      
+        console.log(customer);
+        return res.status(201).json(customer);
+      })
+      .catch((err) => res.status(500).json({ error: err }));
   }
 }
 

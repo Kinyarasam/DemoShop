@@ -11,6 +11,7 @@ router
   .get('/customers', CustomerController.getAll)
   .post('/customer', CustomerController.createNew)
   .get('/customer', CustomerController.getOne)
+  .put('/customer/:id', CustomerController.updateOne)
 
 
 export default router;
